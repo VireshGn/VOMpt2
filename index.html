@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOM — Luxury Freelance Agency</title>
+  <meta name="description" content="VOM is a luxury freelance agency specializing in brand identity, digital design, and strategic consulting.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================
+       CSS Custom Properties
+       ======================================== */
+    :root {
+      --color-bg: #0d0d0d;
+      --color-bg-elevated: #141414;
+      --color-bg-card: #1a1a1a;
+      --color-gold: #c9a84c;
+      --color-gold-dim: rgba(201, 168, 76, 0.15);
+      --color-gold-hover: #d4b85e;
+      --color-text: #e8e8e8;
+      --color-text-muted: #888;
+      --color-text-dim: #555;
+      --color-border: #2a2a2a;
+      --color-white: #fff;
+
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', Helvetica, Arial, sans-serif;
+
+      --nav-height: 80px;
+      --section-padding: 120px 0;
+      --container-width: 1200px;
+      --border-radius: 2px;
+
+      --transition-base: 0.3s ease;
+      --transition-slow: 0.6s ease;
+    }
+
+    /* ========================================
+       Reset & Base
+       ======================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-weight: 300;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Grain texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .container {
+      width: 90%;
+      max-width: var(--container-width);
+      margin: 0 auto;
+    }
+
+    /* ========================================
+       Scroll Reveal
+       ======================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ========================================
+       Navigation
+       ======================================== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--nav-height);
+      z-index: 1000;
+      transition: background-color var(--transition-base), backdrop-filter var(--transition-base);
+      background-color: rgba(13, 13, 13, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav.transparent {
+      background-color: transparent;
+      backdrop-filter: none;
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--color-white);
+    }
+
+    .nav__logo span {
+      color: var(--color-gold);
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav__links a {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      transition: color var(--transition-base);
+    }
+
+    .nav__links a:hover {
+      color: var(--color-gold);
+    }
+
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 5px;
+    }
+
+    .nav__hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background-color: var(--color-white);
+      transition: transform var(--transition-base), opacity var(--transition-base);
+    }
+
+    .nav__hamburger.active span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg);
+    }
+
+    .nav__hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav__hamburger.active span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg);
+    }
+
+    /* ========================================
+       Hero
+       ======================================== */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .hero__content {
+      max-width: 800px;
+    }
+
+    .hero__headline {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--color-white);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero__headline em {
+      font-style: italic;
+      color: var(--color-gold);
+    }
+
+    .hero__subtext {
+      font-size: 1rem;
+      color: var(--color-text-muted);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2.5rem;
+      background-color: var(--color-gold);
+      color: var(--color-bg);
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background-color var(--transition-base), transform var(--transition-base);
+    }
+
+    .hero__cta:hover {
+      background-color: var(--color-gold-hover);
+      transform: translateY(-2px);
+    }
+
+    .hero__cta svg {
+      width: 16px;
+      height: 16px;
+      transition: transform var(--transition-base);
+    }
+
+    .hero__cta:hover svg {
+      transform: translateX(4px);
+    }
+
+    .hero__scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+
+    .hero__scroll-indicator span {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-text-dim);
+    }
+
+    .hero__scroll-indicator svg {
+      width: 16px;
+      height: 16px;
+      color: var(--color-text-dim);
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* ========================================
+       Section shared styles
+       ======================================== */
+    .section {
+      padding: var(--section-padding);
+    }
+
+    .section__label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: 1rem;
+    }
+
+    .section__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      color: var(--color-white);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section__subtitle {
+      color: var(--color-text-muted);
+      max-width: 520px;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    /* ========================================
+       Services
+       ======================================== */
+    .services {
+      background-color: var(--color-bg);
+    }
+
+    .services__header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .services__header .section__subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .services__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--color-border);
+    }
+
+    .service-card {
+      padding: 3rem 2.5rem;
+      border-right: 1px solid var(--color-border);
+      position: relative;
+      transition: background-color var(--transition-slow);
+    }
+
+    .service-card:last-child {
+      border-right: none;
+    }
+
+    .service-card:hover {
+      background-color: var(--color-bg-elevated);
+    }
+
+    .service-card__number {
+      font-family: var(--font-serif);
+      font-size: 5rem;
+      font-weight: 700;
+      color: var(--color-border);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      transition: color var(--transition-slow);
+    }
+
+    .service-card:hover .service-card__number {
+      color: var(--color-gold-dim);
+    }
+
+    .service-card__title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-white);
+      margin-bottom: 1rem;
+    }
+
+    .service-card__desc {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .service-card__tag {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+      transition: border-color var(--transition-base), color var(--transition-base);
+    }
+
+    .service-card:hover .service-card__tag {
+      border-color: var(--color-gold-dim);
+      color: var(--color-text);
+    }
+
+    /* ========================================
+       Testimonials
+       ======================================== */
+    .testimonials {
+      background-color: var(--color-bg-elevated);
+    }
+
+    .testimonials__header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .testimonials__header .section__subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .testimonials__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .testimonial-card {
+      background-color: var(--color-bg);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      transition: border-color var(--transition-base);
+    }
+
+    .testimonial-card:hover {
+      border-color: var(--color-gold-dim);
+    }
+
+    .testimonial-card__quote-mark {
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      font-family: var(--font-serif);
+      font-size: 10rem;
+      font-weight: 700;
+      color: var(--color-border);
+      line-height: 1;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .testimonial-card__stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-card__stars svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--color-gold);
+    }
+
+    .testimonial-card__text {
+      font-size: 0.95rem;
+      color: var(--color-text-muted);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .testimonial-card__author {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .testimonial-card__name {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--color-white);
+    }
+
+    .testimonial-card__role {
+      font-size: 0.75rem;
+      color: var(--color-text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    /* ========================================
+       Contact
+       ======================================== */
+    .contact {
+      background-color: var(--color-bg);
+    }
+
+    .contact__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+
+    .contact__info-desc {
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact__details {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact__detail-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .contact__detail-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--color-gold);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .contact__detail-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-text-dim);
+      margin-bottom: 0.25rem;
+    }
+
+    .contact__detail-value {
+      font-size: 0.95rem;
+      color: var(--color-text);
+    }
+
+    .contact__form {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-text-dim);
+      margin-bottom: 0.75rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      padding: 0.75rem 0;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--color-text);
+      outline: none;
+      transition: border-color var(--transition-base);
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-bottom-color: var(--color-gold);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--color-text-dim);
+    }
+
+    .form-group select {
+      cursor: pointer;
+    }
+
+    .form-group select option {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form__row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .form__submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2.5rem;
+      background-color: var(--color-gold);
+      color: var(--color-bg);
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background-color var(--transition-base), transform var(--transition-base);
+      align-self: flex-start;
+    }
+
+    .form__submit:hover {
+      background-color: var(--color-gold-hover);
+      transform: translateY(-2px);
+    }
+
+    .form__submit svg {
+      width: 16px;
+      height: 16px;
+      transition: transform var(--transition-base);
+    }
+
+    .form__submit:hover svg {
+      transform: translateX(4px);
+    }
+
+    .form__success {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .form__success.visible {
+      display: block;
+    }
+
+    .form__success-icon {
+      width: 48px;
+      height: 48px;
+      color: var(--color-gold);
+      margin: 0 auto 1rem;
+    }
+
+    .form__success-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-white);
+      margin-bottom: 0.5rem;
+    }
+
+    .form__success-text {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    /* ========================================
+       Footer
+       ======================================== */
+    .footer {
+      padding: 3rem 0;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer__logo {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--color-white);
+    }
+
+    .footer__logo span {
+      color: var(--color-gold);
+    }
+
+    .footer__copyright {
+      font-size: 0.8rem;
+      color: var(--color-text-dim);
+    }
+
+    .footer__socials {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer__socials a {
+      color: var(--color-text-dim);
+      transition: color var(--transition-base);
+    }
+
+    .footer__socials a:hover {
+      color: var(--color-gold);
+    }
+
+    .footer__socials svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ========================================
+       Mobile Nav Overlay
+       ======================================== */
+    .nav__overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(13, 13, 13, 0.98);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .nav__overlay.active {
+      display: flex;
+    }
+
+    .nav__overlay a {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      color: var(--color-text);
+      transition: color var(--transition-base);
+    }
+
+    .nav__overlay a:hover {
+      color: var(--color-gold);
+    }
+
+    /* ========================================
+       Responsive
+       ======================================== */
+    @media (max-width: 968px) {
+      :root {
+        --section-padding: 80px 0;
+      }
+
+      .nav__links {
+        display: none;
+      }
+
+      .nav__hamburger {
+        display: flex;
+      }
+
+      .services__grid {
+        grid-template-columns: 1fr;
+        border: none;
+      }
+
+      .service-card {
+        border: 1px solid var(--color-border);
+        border-right: 1px solid var(--color-border);
+        margin-bottom: -1px;
+      }
+
+      .testimonials__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact__grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .form__row {
+        grid-template-columns: 1fr;
+      }
+
+      .footer__inner {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+      }
+
+      .hero__headline {
+        font-size: clamp(2.5rem, 8vw, 4rem);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero__cta {
+        padding: 0.85rem 2rem;
+      }
+
+      .service-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .testimonial-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .contact__grid {
+        gap: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================
+       Navigation
+       ======================================== -->
+  <nav class="nav transparent" id="nav">
+    <div class="container nav__inner">
+      <a href="#" class="nav__logo">V<span>O</span>M</a>
+      <ul class="nav__links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="nav__hamburger" id="hamburger" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav Overlay -->
+  <div class="nav__overlay" id="navOverlay">
+    <a href="#services" class="nav-overlay-link">Services</a>
+    <a href="#testimonials" class="nav-overlay-link">Testimonials</a>
+    <a href="#contact" class="nav-overlay-link">Contact</a>
+  </div>
+
+  <!-- ========================================
+       Hero
+       ======================================== -->
+  <section class="hero" id="hero">
+    <div class="hero__content">
+      <h1 class="hero__headline reveal">We Build<br><em>Exceptional</em> Brands</h1>
+      <p class="hero__subtext reveal reveal-delay-1">A luxury freelance agency crafting bespoke brand experiences for visionary clients worldwide.</p>
+      <a href="#contact" class="hero__cta reveal reveal-delay-2">
+        Start a Project
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="hero__scroll-indicator">
+      <span>Scroll</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- ========================================
+       Services
+       ======================================== -->
+  <section class="section services" id="services">
+    <div class="container">
+      <div class="services__header reveal">
+        <p class="section__label">What We Do</p>
+        <h2 class="section__title">Services Tailored to Elevate</h2>
+        <p class="section__subtitle">We partner with ambitious brands to create lasting impressions through design, strategy, and meticulous craft.</p>
+      </div>
+      <div class="services__grid">
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-card__number">01</div>
+          <h3 class="service-card__title">Brand Identity</h3>
+          <p class="service-card__desc">Developing cohesive visual identities that capture your brand's essence and resonate with your target audience.</p>
+          <div class="service-card__tags">
+            <span class="service-card__tag">Logo Design</span>
+            <span class="service-card__tag">Typography</span>
+            <span class="service-card__tag">Brand Guidelines</span>
+          </div>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-card__number">02</div>
+          <h3 class="service-card__title">Digital Design</h3>
+          <p class="service-card__desc">Crafting stunning digital experiences — from websites to applications — that blend beauty with intuitive functionality.</p>
+          <div class="service-card__tags">
+            <span class="service-card__tag">Web Design</span>
+            <span class="service-card__tag">UI/UX</span>
+            <span class="service-card__tag">Motion</span>
+          </div>
+        </div>
+        <div class="service-card reveal reveal-delay-3">
+          <div class="service-card__number">03</div>
+          <h3 class="service-card__title">Strategic Consulting</h3>
+          <p class="service-card__desc">Providing actionable insights and strategic direction to position your brand for sustained growth and market leadership.</p>
+          <div class="service-card__tags">
+            <span class="service-card__tag">Market Research</span>
+            <span class="service-card__tag">Brand Strategy</span>
+            <span class="service-card__tag">Positioning</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       Testimonials
+       ======================================== -->
+  <section class="section testimonials" id="testimonials">
+    <div class="container">
+      <div class="testimonials__header reveal">
+        <p class="section__label">Client Stories</p>
+        <h2 class="section__title">Words From Those We've Served</h2>
+        <p class="section__subtitle">Our success is measured by the success of our clients. Here's what they have to say.</p>
+      </div>
+      <div class="testimonials__grid">
+        <div class="testimonial-card reveal reveal-delay-1">
+          <div class="testimonial-card__quote-mark">&ldquo;</div>
+          <div class="testimonial-card__stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p class="testimonial-card__text">VOM transformed our entire brand presence. The attention to detail and strategic thinking behind every decision was remarkable. Truly world-class.</p>
+          <div class="testimonial-card__author">
+            <span class="testimonial-card__name">Alexandra Chen</span>
+            <span class="testimonial-card__role">CEO, Meridian Luxe</span>
+          </div>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-2">
+          <div class="testimonial-card__quote-mark">&ldquo;</div>
+          <div class="testimonial-card__stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p class="testimonial-card__text">Working with VOM was an extraordinary experience. They don't just design — they understand business, culture, and the art of storytelling through visual language.</p>
+          <div class="testimonial-card__author">
+            <span class="testimonial-card__name">Marcus Ivory</span>
+            <span class="testimonial-card__role">Founder, Atelier Noir</span>
+          </div>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-3">
+          <div class="testimonial-card__quote-mark">&ldquo;</div>
+          <div class="testimonial-card__stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p class="testimonial-card__text">The rebrand VOM delivered exceeded every expectation. Our conversions increased by 40% within three months. They are, without question, the best in the industry.</p>
+          <div class="testimonial-card__author">
+            <span class="testimonial-card__name">Sofia Reyes</span>
+            <span class="testimonial-card__role">CMO, Velour Group</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       Contact
+       ======================================== -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <div class="contact__grid">
+        <div class="contact__left reveal">
+          <p class="section__label">Get in Touch</p>
+          <h2 class="section__title">Let's Create Something Extraordinary</h2>
+          <p class="contact__info-desc">Ready to elevate your brand? We'd love to hear about your vision. Reach out and let's start a conversation.</p>
+          <div class="contact__details">
+            <div class="contact__detail-row">
+              <svg class="contact__detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <div>
+                <p class="contact__detail-label">Email</p>
+                <p class="contact__detail-value">hello@vomagency.com</p>
+              </div>
+            </div>
+            <div class="contact__detail-row">
+              <svg class="contact__detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <div>
+                <p class="contact__detail-label">Phone</p>
+                <p class="contact__detail-value">+1 (212) 555-0147</p>
+              </div>
+            </div>
+            <div class="contact__detail-row">
+              <svg class="contact__detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div>
+                <p class="contact__detail-label">Locations</p>
+                <p class="contact__detail-value">New York · London · Dubai</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact__right reveal reveal-delay-2">
+          <form class="contact__form" id="contactForm">
+            <div class="form__row">
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="John Doe" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Your Email</label>
+                <input type="email" id="email" name="email" placeholder="john@example.com" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="project">Project Type</label>
+              <select id="project" name="project" required>
+                <option value="" disabled selected>Select a service</option>
+                <option value="brand-identity">Brand Identity</option>
+                <option value="digital-design">Digital Design</option>
+                <option value="strategic-consulting">Strategic Consulting</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Your Message</label>
+              <textarea id="message" name="message" placeholder="Tell us about your project..." rows="4" required></textarea>
+            </div>
+            <button type="submit" class="form__submit">
+              Send Message
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+          </form>
+          <div class="form__success" id="formSuccess">
+            <svg class="form__success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <h3 class="form__success-title">Message Sent</h3>
+            <p class="form__success-text">Thank you for reaching out. We'll be in touch within 24 hours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       Footer
+       ======================================== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a href="#" class="footer__logo">V<span>O</span>M</a>
+      <p class="footer__copyright">&copy; 2026 VOM Agency. All rights reserved.</p>
+      <div class="footer__socials">
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="#" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="#" aria-label="Dribbble">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M19.13 5.09C15.22 9.14 10 10.44 2.25 10.94"/><path d="M21.75 12.84c-6.62-1.41-12.14 1-16.38 6.32"/><path d="M8.56 2.75c4.37 6 6 9.42 8 17.72"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================
+       JavaScript
+       ======================================== -->
+  <script>
+    (function() {
+      'use strict';
+
+      // ---- Scroll Reveal with IntersectionObserver ----
+      const revealElements = document.querySelectorAll('.reveal');
+      const revealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealElements.forEach(function(el) {
+        revealObserver.observe(el);
+      });
+
+      // ---- Navigation scroll behavior ----
+      var nav = document.getElementById('nav');
+      var lastScroll = 0;
+
+      function handleNavScroll() {
+        var scrollY = window.scrollY;
+        if (scrollY > 100) {
+          nav.classList.remove('transparent');
+        } else {
+          nav.classList.add('transparent');
+        }
+        lastScroll = scrollY;
+      }
+
+      window.addEventListener('scroll', handleNavScroll, { passive: true });
+
+      // ---- Mobile hamburger menu ----
+      var hamburger = document.getElementById('hamburger');
+      var navOverlay = document.getElementById('navOverlay');
+
+      hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('active');
+        navOverlay.classList.toggle('active');
+        document.body.style.overflow = navOverlay.classList.contains('active') ? 'hidden' : '';
+      });
+
+      var overlayLinks = document.querySelectorAll('.nav-overlay-link');
+      overlayLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+          hamburger.classList.remove('active');
+          navOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      });
+
+      // ---- Form submission with visual confirmation ----
+      var contactForm = document.getElementById('contactForm');
+      var formSuccess = document.getElementById('formSuccess');
+
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Simulate form submission
+        var submitBtn = contactForm.querySelector('.form__submit');
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+
+        setTimeout(function() {
+          contactForm.style.display = 'none';
+          formSuccess.classList.add('visible');
+        }, 800);
+      });
+    })();
+  </script>
+</body>
+</html>
