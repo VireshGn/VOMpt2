@@ -852,6 +852,44 @@
         gap: 2.5rem;
       }
     }
+    .hero__buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero__cta--outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2.5rem;
+      background-color: transparent;
+      color: var(--color-gold);
+      border: 1px solid var(--color-gold);
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    }
+
+    .hero__cta--outline:hover {
+      background-color: var(--color-gold);
+      color: var(--color-bg);
+      transform: translateY(-2px);
+    }
+    .hero__cta--outline svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s ease;
+    }
+
+    .hero__cta--outline:hover svg {
+      transform: translateX(4px);
+    }
   </style>
 </head>
 <body>
@@ -889,10 +927,16 @@
     <div class="hero__content">
       <h1 class="hero__headline reveal">We Build<br><em>Exceptional</em> Brands</h1>
       <p class="hero__subtext reveal reveal-delay-1">A luxury freelance agency crafting bespoke brand experiences for visionary clients worldwide.</p>
-      <a href="#contact" class="hero__cta reveal reveal-delay-2">
-        Start a Project
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
+      <div class="hero__buttons reveal reveal-delay-2">
+        <a href="#contact" class="hero__cta">
+          Start a Project
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="/about" class="hero__cta--outline">
+          Know More About Us
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
     </div>
     <div class="hero__scroll-indicator">
       <span>Scroll</span>
